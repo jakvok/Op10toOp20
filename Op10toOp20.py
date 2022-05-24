@@ -96,19 +96,30 @@ class Op10to20:
         return text   
 
 
-x = Op10to20()
-x.read_changes('changes.csv')
+print(' +------------------------------+\n',
+    '| Grob G350 NC prog conversion |\n',
+    '|        Op.10 to Op.20        |\n',
+    '|        by jakvok 2022        |\n',
+    '+------------------------------+\n')
 
 while 1:
-        input_file = input('Set file for conversion: ')
-        if x.read_input(input_file): break
+    print()
 
-x.convert()
+    x = Op10to20()
+    x.read_changes('changes.csv')
 
-while 1:
-        output_file = input('Set output file: ')
-        if output_file:
-            if x.write_output(output_file): break
-        else:
-            if x.write_output(): break
+    while 1:
+            input_file = input('Set file for conversion: ')
+            if x.read_input(input_file): break
 
+    x.convert()
+
+    while 1:
+            output_file = input('Set output file: ')
+            if output_file:
+                if x.write_output(output_file): break
+            else:
+                if x.write_output(): break
+
+    print()
+    if input('Continue? [Y/N]: ') in 'Nn': break

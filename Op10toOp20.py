@@ -132,30 +132,31 @@ class Op10to20:
         return text
 
 
-print(' +------------------------------+\n',
-    '| Grob G350 NC prog conversion |\n',
-    '|     Op.10 to Op.20  v0.1.3   |\n',
-    '|        by jakvok 2022        |\n',
-    '+------------------------------+\n')
+if __name__ == '__main__':
+    print(' +------------------------------+\n',
+        '| Grob G350 NC prog conversion |\n',
+        '|     Op.10 to Op.20  v0.1.3   |\n',
+        '|        by jakvok 2022        |\n',
+        '+------------------------------+\n')
 
-while 1:    # main loop
-    print()
+    while 1:    # main loop
+        print()
 
-    x = Op10to20()
-    x.read_changes('changes.csv')   # read list of changing values
+        x = Op10to20()
+        x.read_changes('changes.csv')   # read list of changing values
 
-    while 1:    # input file for conversion
-            input_file = input('Set file for conversion: ')
-            if x.read_input(input_file): break
+        while 1:    # input file for conversion
+                input_file = input('Set file for conversion: ')
+                if x.read_input(input_file): break
 
-    x.convert() # do conversion
+        x.convert() # do conversion
 
-    while 1:    # input file to write changed NC prog to
-            output_file = input('Set output file: ')
-            if output_file:
-                if x.write_output(output_file): break
-            else:
-                if x.write_output(): break
+        while 1:    # input file to write changed NC prog to
+                output_file = input('Set output file: ')
+                if output_file:
+                    if x.write_output(output_file): break
+                else:
+                    if x.write_output(): break
 
-    print()
-    if input('Continue? [Y/N]: ') in 'Nn': break
+        print()
+        if input('Continue? [Y/N]: ') in 'Nn': break

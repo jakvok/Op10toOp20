@@ -30,6 +30,7 @@ class MainWindow(tkinter.Tk):
         self.text_output.set('...')
         
         self.initial_dir = os.getenv('HOME')
+        self.conversion = Op10toOp20.Op10to20()
     
     
     def create_styles(self):
@@ -39,7 +40,6 @@ class MainWindow(tkinter.Tk):
     
     def create_widgets(self):
         self.entry_input_file = ttk.Entry(self, width=70, justify='left', textvariable=self.input_file, style='input.TEntry')
-        #self.entry_input_file.xview_moveto(1)
         self.choose_button = ttk.Button(self, text='Choose file', command=self.choose_file)
         self.convert_button = ttk.Button(self, text='Convert file', command=self.convert_file)
         self.entry_output_file = ttk.Entry(self, width=70, justify='right', textvariable=self.output_file, style='input.TEntry')
@@ -48,6 +48,7 @@ class MainWindow(tkinter.Tk):
         self.text_area = ScrolledText(self, height=15, width=50)
         self.text_area.insert('1.0', self.text_output.get())
         self.text_area.insert('2.0', '\nooo')
+        self.button_exit = ttk.Button(self, text='EXIT', command=lambda: sys.exit(0))
 
     
     def create_geometry(self):
@@ -57,8 +58,10 @@ class MainWindow(tkinter.Tk):
         self.entry_output_file.grid(column=0, row=2, sticky='w', padx=7, pady=(7,0))
         self.save_as_button.grid(column=1, row=2, sticky='e', padx=7, pady=(7,0))
         self.save_button.grid(column=1, row=3, sticky='e', padx=7, pady=(7,10))
+        self.button_exit.grid(column=1, row=4, sticky='e', padx=7, pady=(7,10))
         self.text_area.grid(column=0, row=1, padx=7)
-    
+
+
     def choose_file(self):
         filetypes = (('Siemens NC files', '*.MPF'),('All files', '*.*'))
         save_dir = self.input_file.get()
@@ -66,63 +69,48 @@ class MainWindow(tkinter.Tk):
         if self.input_file.get() == '':
             self.input_file.set(save_dir)
         else:
-            path_components = []
-            n = self.input_file.get()
-            drive = os.path.splitdrive(n)[0] + os.sep
-            n = os.path.splitdrive(n)[1]
-            while True:
-                a = os.path.split(n)
-                if a[1] == '':
-                    break
-                path_components.append(a[1])
-                n = a[0]
-            #path_components.append(drive)
-            path_components.reverse()
-            print('_3_', path_components)
-            
-            path = ''
-            for b in path_components:
-                path = os.path.join(path, b)
+            path = self.input_file.get()
+            path = self.__path_os_sep(path)
                 
-            self.input_file.set(os.path.join(drive, path))
+            self.input_file.set(path)
             self.initial_dir = os.path.split(self.input_file.get())[0]
-
             self.output_file.set(os.path.join(self.initial_dir, 'converted_' + os.path.split(self.input_file.get())[1]))
         
         
     def convert_file(self):
-        pass
+        self.conversion.read_changes('changes.csv')
+        if self.conversion.read_input(self.input_file.get()):
+            self.conversion.convert()
 
 
     def save_as_file(self):
-        pass
+        filetypes = (('Siemens NC files', '*.MPF'),('All files', '*.*'))
+        savefile = self.__path_os_sep(filedialog.asksaveasfilename(title='Choose file to save', filetypes=filetypes))
+        if savefile != '':
+            self.output_file.set(savefile)
+            self.save_file()
 
     def save_file(self):
-        pass
+        self.conversion.write_output(self.output_file.get())
 
-
-
-class uniPath():
-    
-    def __init__(self, input_path):
-        self.input_path = input_path
+   
+    def __path_os_sep(self,path_string):
+        drive = os.path.splitdrive(path_string)[0] + os.sep
+        path = os.path.splitdrive(path_string)[1]
         path_components = []
-        n = self.input_path
-        print('uniPath _input_path_: ', self.input_path)
-        while n:
-            a = os.path.split(n)
-            print('uniPath _a_:', a )
+        while True:
+            a = os.path.split(path)
+            if a[1] == '':
+                break
             path_components.append(a[1])
-            n = a[0]
-        path_components.reverse()
-        self.path = ''
+            path = a[0]
+        path_components.reverse()            
+        path = ''
         for b in path_components:
-            self.path = os.path.join(self.path, b)
+            path = os.path.join(path, b)
+        if path: path = os.path.join(drive, path)
         
-'''
-a = uniPath('aaa/bbb/ccc/ghyrht.txt')
-print(a.path)
-'''
+        return path
 
     
 

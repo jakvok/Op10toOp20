@@ -3,7 +3,7 @@
 import tkinter
 from tkinter import ttk, filedialog
 from tkinter.scrolledtext import ScrolledText
-import sys, os
+import sys, os, io
 import Op10toOp20
 
 class MainWindow(tkinter.Tk):
@@ -27,7 +27,7 @@ class MainWindow(tkinter.Tk):
         self.output_file = tkinter.StringVar(self)
         self.output_file.set('...')
         self.text_output = tkinter.StringVar(self)
-        self.text_output.set('...')
+        self.text_output.set('...\n')
         
         self.initial_dir = os.getenv('HOME')
         self.conversion = Op10toOp20.Op10to20()
@@ -47,8 +47,6 @@ class MainWindow(tkinter.Tk):
         self.save_button = ttk.Button(self, text=' Save ', command=self.save_file)
         self.text_area = ScrolledText(self, height=15, width=50)
         self.text_area.insert('1.0', self.text_output.get())
-        self.text_area.insert('2.0', '\nooo')
-        self.text_area['state'] = 'disabled'
         self.button_exit = ttk.Button(self, text='EXIT', command=lambda: sys.exit(0))
 
     
@@ -79,9 +77,17 @@ class MainWindow(tkinter.Tk):
         
         
     def convert_file(self):
-        self.conversion.read_changes('changes.csv')
-        if self.conversion.read_input(self.input_file.get()):
-            self.conversion.convert()
+        stdout_real = sys.stdout
+        stdout_buffer = io.StringIO()
+        try:
+            sys.stdout = stdout_buffer
+            self.conversion.read_changes('changes.csv')
+            if self.conversion.read_input(self.input_file.get()):
+                self.conversion.convert()
+        finally:
+            sys.stdout = stdout_real
+            self.text_area.insert(tkinter.INSERT, stdout_buffer.getvalue()) 
+            stdout_buffer.close()
 
 
     def save_as_file(self):
@@ -92,7 +98,15 @@ class MainWindow(tkinter.Tk):
             self.save_file()
 
     def save_file(self):
-        self.conversion.write_output(self.output_file.get())
+        stdout_real = sys.stdout
+        stdout_buffer = io.StringIO()
+        try:
+            sys.stdout = stdout_buffer
+            self.conversion.write_output(self.output_file.get())
+        finally:
+            sys.stdout = stdout_real
+            self.text_area.insert(tkinter.INSERT, stdout_buffer.getvalue()) 
+            stdout_buffer.close()
 
    
     def __path_os_sep(self,path_string):

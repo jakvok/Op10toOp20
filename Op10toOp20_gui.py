@@ -45,7 +45,7 @@ class MainWindow(tkinter.Tk):
         self.entry_output_file = ttk.Entry(self, width=70, justify='right', textvariable=self.output_file, style='input.TEntry')
         self.save_as_button = ttk.Button(self, text='Save as', command=self.save_as_file)
         self.save_button = ttk.Button(self, text=' Save ', command=self.save_file)
-        self.text_area = ScrolledText(self, height=15, width=50)
+        self.text_area = ScrolledText(self, height=15, width=68)
         self.text_area.insert('1.0', self.text_output.get())
         self.button_exit = ttk.Button(self, text='EXIT', command=lambda: sys.exit(0))
 

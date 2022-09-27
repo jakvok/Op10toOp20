@@ -39,7 +39,7 @@ class MainWindow(tkinter.Tk):
     
     
     def create_widgets(self):
-        self.entry_input_file = ttk.Entry(self, width=70, justify='left', textvariable=self.input_file, style='input.TEntry')
+        self.entry_input_file = ttk.Entry(self, width=70, justify='right', textvariable=self.input_file, style='input.TEntry')
         self.choose_button = ttk.Button(self, text='Choose file', command=self.choose_file)
         self.convert_button = ttk.Button(self, text='Convert file', command=self.convert_file)
         self.entry_output_file = ttk.Entry(self, width=70, justify='right', textvariable=self.output_file, style='input.TEntry')
@@ -48,6 +48,7 @@ class MainWindow(tkinter.Tk):
         self.text_area = ScrolledText(self, height=15, width=50)
         self.text_area.insert('1.0', self.text_output.get())
         self.text_area.insert('2.0', '\nooo')
+        self.text_area['state'] = 'disabled'
         self.button_exit = ttk.Button(self, text='EXIT', command=lambda: sys.exit(0))
 
     

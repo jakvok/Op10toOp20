@@ -54,7 +54,6 @@ class Op10to20:
         converts NC programm
         '''
         print('Converting...')
-        # self.appearance.fromkeys(self.appearance, 0)
         # goes thru all NC prog lines and searches strings to substitute
         for n in self.inputNC:
             for m in self.changes:

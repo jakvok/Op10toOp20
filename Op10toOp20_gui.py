@@ -30,7 +30,6 @@ class MainWindow(tkinter.Tk):
         self.text_output.set('...\n')
         
         self.initial_dir = os.getenv('HOME')
-        self.conversion = Op10toOp20.Op10to20()
     
     
     def create_styles(self):
@@ -45,7 +44,7 @@ class MainWindow(tkinter.Tk):
         self.entry_output_file = ttk.Entry(self, width=70, justify='right', textvariable=self.output_file, style='input.TEntry')
         self.save_as_button = ttk.Button(self, text='Save as', command=self.save_as_file)
         self.save_button = ttk.Button(self, text=' Save ', command=self.save_file)
-        self.text_area = ScrolledText(self, height=15, width=68)
+        self.text_area = ScrolledText(self, height=25, width=60, font=('Sans','9'))
         self.text_area.insert('1.0', self.text_output.get())
         self.button_exit = ttk.Button(self, text='EXIT', command=lambda: sys.exit(0))
 
@@ -81,6 +80,7 @@ class MainWindow(tkinter.Tk):
         stdout_buffer = io.StringIO()
         try:
             sys.stdout = stdout_buffer
+            self.conversion = Op10toOp20.Op10to20()
             self.conversion.read_changes('changes.csv')
             if self.conversion.read_input(self.input_file.get()):
                 self.conversion.convert()
@@ -103,6 +103,8 @@ class MainWindow(tkinter.Tk):
         try:
             sys.stdout = stdout_buffer
             self.conversion.write_output(self.output_file.get())
+        except AttributeError:
+            print('File not converted yet.')
         finally:
             sys.stdout = stdout_real
             self.text_area.insert(tkinter.INSERT, stdout_buffer.getvalue()) 

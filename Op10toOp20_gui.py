@@ -38,22 +38,22 @@ class MainWindow(tkinter.Tk):
     
     
     def create_widgets(self):
-        self.entry_input_file = ttk.Entry(self, width=70, justify='right', textvariable=self.input_file, style='input.TEntry')
+        self.entry_input_file = ttk.Entry(self, justify='right', textvariable=self.input_file, style='input.TEntry')
         self.choose_button = ttk.Button(self, text='Choose file', command=self.choose_file)
         self.convert_button = ttk.Button(self, text='Convert file', command=self.convert_file)
-        self.entry_output_file = ttk.Entry(self, width=70, justify='right', textvariable=self.output_file, style='input.TEntry')
+        self.entry_output_file = ttk.Entry(self, justify='right', textvariable=self.output_file, style='input.TEntry')
         self.save_as_button = ttk.Button(self, text='Save as', command=self.save_as_file)
         self.save_button = ttk.Button(self, text=' Save ', command=self.save_file)
-        self.text_area = ScrolledText(self, height=25, width=60, font=('Sans','9'))
+        self.text_area = ScrolledText(self, height=30, width=60, font=('Sans','10'))
         self.text_area.insert('1.0', self.text_output.get())
         self.button_exit = ttk.Button(self, text='EXIT', command=lambda: sys.exit(0))
 
     
     def create_geometry(self):
-        self.entry_input_file.grid(column=0, row=0, sticky='w', padx=7, pady=(7,7))
-        self.choose_button.grid(column=1, row=0, sticky='e', padx=10)
-        self.convert_button.grid(column=1, row=1, sticky='s', padx=7, pady=(7,7))
-        self.entry_output_file.grid(column=0, row=2, sticky='w', padx=7, pady=(7,0))
+        self.entry_input_file.grid(column=0, row=0, sticky='we', padx=7, pady=(7,7))
+        self.choose_button.grid(column=1, row=0, sticky='e', padx=7, pady=(7,7))
+        self.convert_button.grid(column=1, row=1, sticky='es', padx=7, pady=(0,14))
+        self.entry_output_file.grid(column=0, row=2, sticky='we', padx=7, pady=(7,0))
         self.save_as_button.grid(column=1, row=2, sticky='e', padx=7, pady=(7,0))
         self.save_button.grid(column=1, row=3, sticky='e', padx=7, pady=(7,10))
         self.button_exit.grid(column=1, row=4, sticky='e', padx=7, pady=(7,10))

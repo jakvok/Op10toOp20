@@ -13,15 +13,15 @@ Each line of file is reserved for one pair of values separated by comma. The fir
 ## linux
 Python 3.8+, only standard modules required on linux.<br>
 Make the script executable:<br>
-`$ chmod +x ./Op10toOp20.py`
+`$ chmod +x ./Op10toOp20_gui.py`
 
 Run the script:<br>
-`$ ./Op10toOp20.py`
+`$ ./Op10toOp20_gui.py`
 
 ## windows
 When python 3.8+ installed, using is the same as on linux system.
 
-Or when python is not available on your win system, use the standalone executable `Op10toOp20.exe`.<br>
+Or when python is not available on your win system, use the standalone executable `Op10toOp20_gui.exe`.<br>
 
 # Example files
 File `example_NC.MPF` is file before conversion.<br>
